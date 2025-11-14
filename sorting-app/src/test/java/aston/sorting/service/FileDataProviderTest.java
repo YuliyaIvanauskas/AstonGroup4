@@ -1,7 +1,6 @@
 package aston.sorting.service;
 
 import aston.sorting.model.Student;
-import aston.sorting.service.FileDataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -21,7 +20,7 @@ class FileDataProviderTest {
     private File testFile;
 
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp() {
         testFile = new File(tempDir, "students.txt");
     }
 
