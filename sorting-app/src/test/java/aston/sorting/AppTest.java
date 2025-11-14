@@ -1,7 +1,13 @@
 package aston.sorting;
 
+import aston.sorting.strategy.BubbleSortStrategy;
+import aston.sorting.strategy.SortingStrategy;
 import org.junit.jupiter.api.Test;
 import aston.sorting.model.Student;
+
+import java.util.Comparator;
+
+import static org.junit.Assert.assertEquals;
 
 class AppTest {
 
@@ -12,5 +18,10 @@ class AppTest {
             Student.builder().groupNumber("IU11").averageGrade(8.1).recordBookNumber("AB1235").build(),
             Student.builder().groupNumber("CS30").averageGrade(6.5).recordBookNumber("AB1236").build()
         };
+        SortingStrategy strategy = new BubbleSortStrategy();
+        strategy.sort(students, Comparator.comparing(Student::getGroupNumber));
+        assertEquals("CS30", students[0].getGroupNumber());
+        assertEquals("IU11", students[1].getGroupNumber());
+        assertEquals("IU25", students[2].getGroupNumber());
     }
 }
