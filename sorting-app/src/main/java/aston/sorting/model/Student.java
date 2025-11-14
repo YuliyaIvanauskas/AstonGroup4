@@ -81,7 +81,15 @@ public final class Student {
         }
 
         public Student build() {
-            // You need add validation here
+            if (groupNumber == null || groupNumber.isEmpty()) {
+                throw new IllegalArgumentException("Group number cannot be null or empty");
+            }
+            if (averageGrade == null || averageGrade < 2.0 || averageGrade > 5.0) {
+                throw new IllegalArgumentException("Average grade must be between 2.0 and 5.0");
+            }
+            if (recordBookNumber == null || recordBookNumber.isEmpty()) {
+                throw new IllegalArgumentException("Record book number cannot be null or empty");
+            }
             return new Student(this);
         }
     }
