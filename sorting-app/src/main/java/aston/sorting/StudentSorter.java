@@ -11,6 +11,11 @@ public class StudentSorter {
         this.strategy = strategy;
     }
 
+    public void setStrategy(SortingStrategy strategy)
+    {
+        this.strategy = strategy;
+    }
+
     public void sort(Student[] students, StudentSortField studentSortField)
     {
         strategy.sort(students, studentSortField.getComparator());
