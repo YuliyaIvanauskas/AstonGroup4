@@ -18,8 +18,8 @@ class AppTest {
             Student.builder().groupNumber("IU11").averageGrade(8.1).recordBookNumber("AB1235").build(),
             Student.builder().groupNumber("CS30").averageGrade(6.5).recordBookNumber("AB1236").build()
         };
-        SortingStrategy strategy = new BubbleSortStrategy();
-        strategy.sort(students, Comparator.comparing(Student::getGroupNumber));
+        StudentSorter studentSorter = new StudentSorter(new BubbleSortStrategy());
+        studentSorter.sort(students, StudentSortField.GROUP_NUMBER);
         assertEquals("CS30", students[0].getGroupNumber());
         assertEquals("IU11", students[1].getGroupNumber());
         assertEquals("IU25", students[2].getGroupNumber());
