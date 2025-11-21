@@ -1,8 +1,8 @@
-package aston.sorting;
+package aston.sorting.service.sorting.students;
 
 import aston.sorting.model.Student;
-import aston.sorting.strategy.BubbleSortStrategy;
-import aston.sorting.strategy.SortingStrategy;
+import aston.sorting.service.sorting.BubbleSortStrategy;
+import aston.sorting.service.sorting.SortingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -1,4 +1,4 @@
-package aston.sorting;
+package aston.sorting.service.sorting.students;
 
 import aston.sorting.model.Student;
 import org.junit.jupiter.api.Test;

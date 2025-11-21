@@ -1,4 +1,4 @@
-package aston.sorting.service;
+package aston.sorting.service.provider;
 
 import aston.sorting.model.Student;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RandomDataProviderTest {
 
-    private RandomDataProvider randomDataProvider = new RandomDataProvider();
+    private final RandomDataProvider randomDataProvider = new RandomDataProvider();
 
     @Test
     void testProvideDataWithValidSize() {

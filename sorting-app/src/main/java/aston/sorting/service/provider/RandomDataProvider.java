@@ -1,4 +1,4 @@
-package aston.sorting.service;
+package aston.sorting.service.provider;
 
 import aston.sorting.exception.ValidationException;
 import aston.sorting.model.Student;

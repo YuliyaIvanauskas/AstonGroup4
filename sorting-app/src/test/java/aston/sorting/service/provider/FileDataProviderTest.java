@@ -1,4 +1,4 @@
-package aston.sorting.service;
+package aston.sorting.service.provider;
 
 import aston.sorting.model.Student;
 import org.junit.jupiter.api.BeforeEach;

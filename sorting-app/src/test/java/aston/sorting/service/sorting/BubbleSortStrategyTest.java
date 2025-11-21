@@ -1,7 +1,7 @@
-package aston.sorting.strategy;
+package aston.sorting.service.sorting;
 
-import aston.sorting.StudentSortField;
-import aston.sorting.StudentSorter;
+import aston.sorting.service.sorting.students.StudentSortField;
+import aston.sorting.service.sorting.students.StudentSorter;
 import aston.sorting.model.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

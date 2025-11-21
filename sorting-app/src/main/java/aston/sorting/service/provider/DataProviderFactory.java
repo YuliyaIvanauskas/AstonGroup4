@@ -1,4 +1,4 @@
-package aston.sorting.service;
+package aston.sorting.service.provider;
 
 public class DataProviderFactory {
     public static DataProvider createProvider(DataSourceType type) {

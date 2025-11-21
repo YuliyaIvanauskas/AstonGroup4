@@ -1,4 +1,4 @@
-package aston.sorting.service;
+package aston.sorting.service.provider;
 
 import static org.junit.jupiter.api.Assertions.*;
 
