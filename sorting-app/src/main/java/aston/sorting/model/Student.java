@@ -81,7 +81,9 @@ public final class Student {
         }
 
         public Student build() {
-            // You need add validation here
+            StudentValidator.validateGroupNumber(groupNumber);
+            StudentValidator.validateAverageGrade(averageGrade);
+            StudentValidator.validateRecordBookNumber(recordBookNumber);
             return new Student(this);
         }
     }

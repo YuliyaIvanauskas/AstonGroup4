@@ -1,13 +1,9 @@
 package aston.sorting;
 
 import aston.sorting.strategy.BubbleSortStrategy;
-import aston.sorting.strategy.SortingStrategy;
 import org.junit.jupiter.api.Test;
 import aston.sorting.model.Student;
-
-import java.util.Comparator;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AppTest {
 
