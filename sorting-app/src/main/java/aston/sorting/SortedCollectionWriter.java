@@ -4,12 +4,12 @@ import java.util.*;
 
 public class SortedCollectionWriter {
 
-    //Method for write in file sorted collection
+    //Method to write sorted collection in to the file
 
     public static <T> void writeSortedCollectionToFile(Collection<T> collection, String filename){
 
 
-        try (BufferedWriter writer = new BufferredWriter(new FileWriter(filename, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
 
             writer.write("---Student---");
             writer.newLine();
