@@ -52,7 +52,7 @@ class FileDataProviderTest {
     @Test
     void testProvideDataWithInvalidData() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(testFile))) {
-            writer.write("A1,6.0,RB1001\n"); // Неверный балл
+            writer.write("A1,16.0,RB1001\n"); // Неверный балл
             writer.write("Invalid,3.8,RB1002\n"); // Неверная группа
             writer.write("B2,3.8,Invalid\n"); // Неверный номер зачетки
             writer.write("C1,4.2,RB1003\n"); // Верная строка

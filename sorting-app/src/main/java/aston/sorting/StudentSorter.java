@@ -4,14 +4,14 @@ import aston.sorting.model.Student;
 import aston.sorting.strategy.SortingStrategy;
 
 public class StudentSorter {
-    private SortingStrategy strategy;
+    private SortingStrategy<Student> strategy;
 
-    public StudentSorter(SortingStrategy strategy)
+    public StudentSorter(SortingStrategy<Student> strategy)
     {
         this.strategy = strategy;
     }
 
-    public void setStrategy(SortingStrategy strategy)
+    public void setStrategy(SortingStrategy<Student> strategy)
     {
         this.strategy = strategy;
     }

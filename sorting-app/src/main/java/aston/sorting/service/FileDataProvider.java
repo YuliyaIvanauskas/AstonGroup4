@@ -1,13 +1,15 @@
 package aston.sorting.service;
 
+import aston.sorting.exception.ValidationException;
 import aston.sorting.model.Student;
-import aston.sorting.util.ValidationUtil;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class FileDataProvider implements DataProvider {
     private static final String DEFAULT_FILE_PATH = "students.txt";
 
@@ -19,7 +21,7 @@ public class FileDataProvider implements DataProvider {
     @Override
     public List<Student> provideData(int size) {
         List<Student> students = new ArrayList<>();
-        String filePath = getFilePath(); // Используем метод вместо прямой константы
+        String filePath = getFilePath();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -27,31 +29,38 @@ public class FileDataProvider implements DataProvider {
             while ((line = reader.readLine()) != null && count < size) {
                 String[] parts = line.split(",");
                 if (parts.length == 3) {
-                    try {
-                        String groupNumber = parts[0].trim();
-                        double averageGrade = Double.parseDouble(parts[1].trim());
-                        String recordBookNumber = parts[2].trim();
-
-                        if (ValidationUtil.isValidGroupNumber(groupNumber) &&
-                                ValidationUtil.isValidGrade(averageGrade) &&
-                                ValidationUtil.isValidRecordBookNumber(recordBookNumber)) {
-
-                            Student student = Student.builder()
-                                    .groupNumber(groupNumber)
-                                    .averageGrade(averageGrade)
-                                    .recordBookNumber(recordBookNumber)
-                                    .build();
-                            students.add(student);
-                            count++;
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Ошибка формата данных в файле: " + line);
-                    }
+                    processStudentLine(parts, students, line);
+                    count = students.size();
                 }
             }
         } catch (IOException e) {
-            System.out.println("Ошибка чтения файла: " + e.getMessage());
+            log.error("Ошибка чтения файла: {}", e.getMessage());
         }
         return students;
+    }
+
+    private void processStudentLine(String[] parts, List<Student> students, String line) {
+        try {
+            String groupNumber = parts[0].trim();
+            double averageGrade = Double.parseDouble(parts[1].trim());
+            String recordBookNumber = parts[2].trim();
+
+            addStudent(groupNumber, averageGrade, recordBookNumber, students);
+        } catch (NumberFormatException e) {
+            log.error("Ошибка формата данных в файле: {}", line);
+        }
+    }
+
+    private void addStudent(String groupNumber, double averageGrade, String recordBookNumber, List<Student> students) {
+        try {
+            Student student = Student.builder()
+                .groupNumber(groupNumber)
+                .averageGrade(averageGrade)
+                .recordBookNumber(recordBookNumber)
+                .build();
+            students.add(student);
+        } catch (ValidationException e) {
+            log.error("Ошибка валидации: {}", e.getMessage());
+        }
     }
 }

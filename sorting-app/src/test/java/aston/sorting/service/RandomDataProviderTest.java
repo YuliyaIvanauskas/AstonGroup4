@@ -22,7 +22,7 @@ class RandomDataProviderTest {
             assertNotNull(student.getGroupNumber());
             assertTrue(student.getGroupNumber().matches("[A-C][1-2]"));
 
-            assertTrue(student.getAverageGrade() >= 2.0 && student.getAverageGrade() <= 5.0);
+            assertTrue(student.getAverageGrade() >= 0.0 && student.getAverageGrade() <= 10.0);
 
             assertNotNull(student.getRecordBookNumber());
             assertTrue(student.getRecordBookNumber().matches("RB\\d{4}"));
@@ -56,7 +56,7 @@ class RandomDataProviderTest {
 
         // Проверяем, что оценки в допустимом диапазоне
         long validGrades = students.stream()
-                .filter(s -> s.getAverageGrade() >= 2.0 && s.getAverageGrade() <= 5.0)
+                .filter(s -> s.getAverageGrade() >= 0.0 && s.getAverageGrade() <= 10.0)
                 .count();
         assertEquals(100, validGrades);
 

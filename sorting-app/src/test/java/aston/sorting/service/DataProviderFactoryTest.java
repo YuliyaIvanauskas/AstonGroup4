@@ -10,21 +10,21 @@ class DataProviderFactoryTest {
     void testCreateFileDataProvider() {
         DataProvider provider = DataProviderFactory.createProvider(
                 DataProviderFactory.DataSourceType.FILE);
-        assertTrue(provider instanceof FileDataProvider);
+        assertInstanceOf(FileDataProvider.class, provider);
     }
 
     @Test
     void testCreateRandomDataProvider() {
         DataProvider provider = DataProviderFactory.createProvider(
                 DataProviderFactory.DataSourceType.RANDOM);
-        assertTrue(provider instanceof RandomDataProvider);
+        assertInstanceOf(RandomDataProvider.class, provider);
     }
 
     @Test
     void testCreateManualDataProvider() {
         DataProvider provider = DataProviderFactory.createProvider(
                 DataProviderFactory.DataSourceType.MANUAL);
-        assertTrue(provider instanceof ManualDataProvider);
+        assertInstanceOf(ManualDataProvider.class, provider);
     }
 
     @Test

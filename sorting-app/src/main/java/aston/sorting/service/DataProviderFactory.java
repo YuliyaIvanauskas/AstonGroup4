@@ -6,16 +6,11 @@ public class DataProviderFactory {
             throw new IllegalArgumentException("Data source type cannot be null");
         }
 
-        switch (type) {
-            case FILE:
-                return new FileDataProvider();
-            case RANDOM:
-                return new RandomDataProvider();
-            case MANUAL:
-                return new ManualDataProvider();
-            default:
-                throw new IllegalArgumentException("Unknown data source type: " + type);
-        }
+        return switch (type) {
+            case FILE -> new FileDataProvider();
+            case RANDOM -> new RandomDataProvider();
+            case MANUAL -> new ManualDataProvider();
+        };
     }
 
     public enum DataSourceType {
