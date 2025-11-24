@@ -1,4 +1,4 @@
-package aston.sorting.evenodd;
+package aston.sorting.service.sorting.evenodd;
 
 import aston.sorting.service.sorting.SortingStrategy;
 import java.util.ArrayList;

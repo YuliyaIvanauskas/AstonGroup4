@@ -1,4 +1,4 @@
-package aston.sorting.service.util;
+package aston.sorting.service.provider.stream;
 
 import aston.sorting.model.Student;
 
@@ -19,7 +19,7 @@ public class CollectionStreamFiller {
     public List<Student> fillWithRandomStudents(int count) {
         return Stream.generate(this::createRandomStudent)
                 .limit(count)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     //Стрим для заполнения коллекции студентами с определенной группой, реализуется функцией createStudentInGroup
@@ -33,15 +33,15 @@ public class CollectionStreamFiller {
     public List<Student> fillStudentsByGradeRange(int count, double minGrade, double maxGrade) {
         return Stream.generate(() -> createStudentWithGradeRange(minGrade, maxGrade))
                 .limit(count)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     //Стрим для заполнения коллекции студентами с последовательными номерами зачеток
     public List<Student> fillWithSequentialRecordBooks(int count, int startRecordBookNumber) {
         return Stream.iterate(startRecordBookNumber, n -> n + 1)
                 .limit(count)
-                .map(n -> createStudentWithRecordBook(n))
-                .collect(Collectors.toList());
+                .map(this::createStudentWithRecordBook)
+                .toList();
     }
 
     private Student createRandomStudent() {
@@ -76,7 +76,7 @@ public class CollectionStreamFiller {
         return Student.builder()
                 .groupNumber(generateRandomGroupName())
                 .averageGrade(generateRandomGrade())
-                .recordBookNumber("RB-" + recordBookNumber)
+                .recordBookNumber("RB" + recordBookNumber)
                 .build();
     }
 
@@ -91,7 +91,7 @@ public class CollectionStreamFiller {
     }
 
     private String generateRandomRecordBook() {
-        return "RB-" + (1000 + random.nextInt(9000));
+        return "RB" + (1000 + random.nextInt(9000));
     }
 
 }

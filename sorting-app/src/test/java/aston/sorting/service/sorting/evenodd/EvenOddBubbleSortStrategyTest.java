@@ -1,4 +1,4 @@
-package aston.sorting.evenodd;
+package aston.sorting.service.sorting.evenodd;
 
 import aston.sorting.model.Student;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,15 +8,15 @@ import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EvenOddInsertionSortStrategyTest {
+class EvenOddBubbleSortStrategyTest {
 
-    private EvenOddInsertionSortStrategy<Integer> integerSortStrategy;
-    private EvenOddInsertionSortStrategy<Student> studentSortStrategy;
+    private EvenOddBubbleSortStrategy<Integer> integerSortStrategy;
+    private EvenOddBubbleSortStrategy<Student> studentSortStrategy;
 
     @BeforeEach
     void setUp() {
-        integerSortStrategy = new EvenOddInsertionSortStrategy<>(x -> (double) x);
-        studentSortStrategy = new EvenOddInsertionSortStrategy<>(Student::getAverageGrade);
+        integerSortStrategy = new EvenOddBubbleSortStrategy<>(x -> (double) x);
+        studentSortStrategy = new EvenOddBubbleSortStrategy<>(Student::getAverageGrade);
     }
 
     @Test
@@ -130,6 +130,34 @@ class EvenOddInsertionSortStrategyTest {
     }
 
     @Test
+    void sort_evenValuesReverseOrder_shouldSortCorrectly() {
+        // Подготовка - четные в обратном порядке
+        Integer[] array = new Integer[]{10, 3, 8, 5, 6, 7, 2};
+        // Четные: 10, 8, 6, 2 -> должны стать: 2, 6, 8, 10
+        Integer[] expected = new Integer[]{2, 3, 6, 5, 8, 7, 10};
+        
+        // Выполнение
+        integerSortStrategy.sort(array, Integer::compareTo);
+        
+        // Проверка
+        assertArrayEquals(expected, array);
+    }
+
+    @Test
+    void sort_duplicateEvenValues_shouldSortCorrectly() {
+        // Подготовка - дубликаты четных значений
+        Integer[] array = new Integer[]{8, 3, 4, 5, 8, 7, 4};
+        // Четные: 8, 4, 8, 4 -> должны стать: 4, 4, 8, 8
+        Integer[] expected = new Integer[]{4, 3, 4, 5, 8, 7, 8};
+        
+        // Выполнение
+        integerSortStrategy.sort(array, Integer::compareTo);
+        
+        // Проверка
+        assertArrayEquals(expected, array);
+    }
+
+    @Test
     void sort_withStudents_evenAverageGrades_shouldSort() {
         // Подготовка - студенты с четными средними баллами
         Student[] students = new Student[]{
@@ -199,10 +227,26 @@ class EvenOddInsertionSortStrategyTest {
     }
 
     @Test
+    void sort_negativeEvenValues_shouldSortCorrectly() {
+        // Подготовка - отрицательные четные значения
+        Integer[] array = new Integer[]{-8, 3, -4, 5, -2, 7};
+        // Четные: -8, -4, -2 -> должны быть отсортированы: -8, -4, -2
+        Integer[] expected = new Integer[]{-8, 3, -4, 5, -2, 7};
+        
+        // Выполнение
+        integerSortStrategy.sort(array, Integer::compareTo);
+        
+        // Проверка
+        assertArrayEquals(expected, array);
+    }
+
+    @Test
     void sort_zeroValue_shouldBeTreatedAsEven() {
         // Подготовка - ноль считается четным
         Integer[] array = new Integer[]{8, 0, 6, 3, 4};
         // Четные на позициях 0(8), 1(0), 2(6), 4(4) -> должны быть отсортированы: 0, 4, 6, 8
+        // Распределяем обратно: позиция 0 -> 0, позиция 1 -> 4, позиция 2 -> 6, позиция 4 -> 8
+        // Нечетное 3 на позиции 3 остается
         Integer[] expected = new Integer[]{0, 4, 6, 3, 8};
         
         // Выполнение
@@ -217,3 +261,4 @@ class EvenOddInsertionSortStrategyTest {
         assertEquals(8, array[4]);
     }
 }
+

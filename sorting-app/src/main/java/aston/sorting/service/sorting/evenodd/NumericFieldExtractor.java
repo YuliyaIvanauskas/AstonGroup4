@@ -1,4 +1,4 @@
-package aston.sorting.evenodd;
+package aston.sorting.service.sorting.evenodd;
 
 /**
  * Functional interface for extracting numeric values from objects

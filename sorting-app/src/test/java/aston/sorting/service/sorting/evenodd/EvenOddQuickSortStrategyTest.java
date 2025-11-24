@@ -1,4 +1,4 @@
-package aston.sorting.evenodd;
+package aston.sorting.service.sorting.evenodd;
 
 import aston.sorting.model.Student;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,15 +8,15 @@ import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EvenOddMergeSortStrategyTest {
+class EvenOddQuickSortStrategyTest {
 
-    private EvenOddMergeSortStrategy<Integer> integerSortStrategy;
-    private EvenOddMergeSortStrategy<Student> studentSortStrategy;
+    private EvenOddQuickSortStrategy<Integer> integerSortStrategy;
+    private EvenOddQuickSortStrategy<Student> studentSortStrategy;
 
     @BeforeEach
     void setUp() {
-        integerSortStrategy = new EvenOddMergeSortStrategy<>(x -> (double) x);
-        studentSortStrategy = new EvenOddMergeSortStrategy<>(Student::getAverageGrade);
+        integerSortStrategy = new EvenOddQuickSortStrategy<>(x -> (double) x);
+        studentSortStrategy = new EvenOddQuickSortStrategy<>(Student::getAverageGrade);
     }
 
     @Test
@@ -98,6 +98,16 @@ class EvenOddMergeSortStrategyTest {
     }
 
     @Test
+    void sort_evenValuesReverseOrder_shouldSortCorrectly() {
+        Integer[] array = new Integer[]{10, 3, 8, 5, 6, 7, 2};
+        Integer[] expected = new Integer[]{2, 3, 6, 5, 8, 7, 10};
+        
+        integerSortStrategy.sort(array, Integer::compareTo);
+        
+        assertArrayEquals(expected, array);
+    }
+
+    @Test
     void sort_withStudents_evenAverageGrades_shouldSort() {
         Student[] students = new Student[]{
             Student.builder().groupNumber("A1").averageGrade(8.0).recordBookNumber("RB1456").build(),
@@ -148,23 +158,13 @@ class EvenOddMergeSortStrategyTest {
     }
 
     @Test
-    void sort_withLargeArrayOfMixedValues_shouldSortCorrectly() {
-        Integer[] array = new Integer[]{22, 15, 8, 31, 44, 17, 6, 23, 50, 11, 12, 9};
+    void sort_duplicateEvenValues_shouldSortCorrectly() {
+        Integer[] array = new Integer[]{8, 3, 4, 5, 8, 7, 4};
+        Integer[] expected = new Integer[]{4, 3, 4, 5, 8, 7, 8};
         
         integerSortStrategy.sort(array, Integer::compareTo);
         
-        assertEquals(6, array[0]);
-        assertEquals(15, array[1]);
-        assertEquals(8, array[2]);
-        assertEquals(31, array[3]);
-        assertEquals(12, array[4]);
-        assertEquals(17, array[5]);
-        assertEquals(22, array[6]);
-        assertEquals(23, array[7]);
-        assertEquals(44, array[8]);
-        assertEquals(11, array[9]);
-        assertEquals(50, array[10]);
-        assertEquals(9, array[11]);
+        assertArrayEquals(expected, array);
     }
 
     @Test
@@ -175,6 +175,31 @@ class EvenOddMergeSortStrategyTest {
     }
 
     @Test
+    void sort_withLargeDataset_performanceTest() {
+        // Создание большого набора данных для проверки производительности
+        Integer[] array = new Integer[100];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = (int)(Math.random() * 1000);
+        }
+        
+        // Выполнение
+        long startTime = System.currentTimeMillis();
+        integerSortStrategy.sort(array, Integer::compareTo);
+        long endTime = System.currentTimeMillis();
+        
+        // Проверка - только проверяем, что даже большой массив обрабатывается за разумное время
+        assertTrue(endTime - startTime < 5000, "Сортировка должна выполняться менее чем за 5 секунд");
+        
+        // Проверка, что четные элементы отсортированы
+        for (int i = 0; i < array.length - 1; i++) {
+            if (array[i] != null && array[i + 1] != null && array[i] % 2 == 0 && array[i + 1] % 2 == 0 &&
+                array[i] > array[i + 1]) {
+                fail("Четные элементы не отсортированы");
+            }
+        }
+    }
+
+    @Test
     void sort_zeroValue_shouldBeTreatedAsEven() {
         Integer[] array = new Integer[]{8, 0, 6, 3, 4};
         Integer[] expected = new Integer[]{0, 4, 6, 3, 8};
@@ -182,10 +207,16 @@ class EvenOddMergeSortStrategyTest {
         integerSortStrategy.sort(array, Integer::compareTo);
         
         assertArrayEquals(expected, array);
-        assertEquals(0, array[0]);
-        assertEquals(4, array[1]);
-        assertEquals(6, array[2]);
-        assertEquals(3, array[3]);
-        assertEquals(8, array[4]);
+    }
+
+    @Test
+    void sort_negativeNumbers_shouldBeHandledCorrectly() {
+        Integer[] array = new Integer[]{-8, -3, -6, -5, -4};
+        // Четные: -8, -6, -4 -> должны стать: -8, -6, -4 (уже отсортированы)
+        Integer[] expected = new Integer[]{-8, -3, -6, -5, -4};
+        
+        integerSortStrategy.sort(array, Integer::compareTo);
+        
+        assertArrayEquals(expected, array);
     }
 }

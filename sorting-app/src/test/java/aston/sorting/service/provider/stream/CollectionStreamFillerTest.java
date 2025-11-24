@@ -1,4 +1,4 @@
-package aston.sorting.service.util;
+package aston.sorting.service.provider.stream;
 
 import aston.sorting.model.Student;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class CollectionStreamFillerTest {
             assertTrue(student.getGroupNumber().matches("^[A-F][1-5]$"));
             assertTrue(student.getAverageGrade() >= 3.0 && student.getAverageGrade() <= 5.0);
             assertNotNull(student.getRecordBookNumber());
-            assertTrue(student.getRecordBookNumber().startsWith("RB-"));
+            assertTrue(student.getRecordBookNumber().startsWith("RB"));
         }
     }
 
@@ -47,7 +47,7 @@ class CollectionStreamFillerTest {
         for (Student student : students) {
             assertEquals(targetGroup, student.getGroupNumber());
             assertTrue(student.getAverageGrade() >= 3.0 && student.getAverageGrade() <= 5.0);
-            assertTrue(student.getRecordBookNumber().startsWith("RB-"));
+            assertTrue(student.getRecordBookNumber().startsWith("RB"));
         }
     }
 
@@ -82,7 +82,7 @@ class CollectionStreamFillerTest {
         for (Student student : students) {
             assertTrue(student.getAverageGrade() >= minGrade && student.getAverageGrade() <= maxGrade);
             assertNotNull(student.getGroupNumber());
-            assertTrue(student.getRecordBookNumber().startsWith("RB-"));
+            assertTrue(student.getRecordBookNumber().startsWith("RB"));
         }
     }
 
@@ -110,7 +110,7 @@ class CollectionStreamFillerTest {
         // Проверяем последовательные номера зачеток
         for (int i = 0; i < students.size(); i++) {
             Student student = students.get(i);
-            String expectedRecordBook = "RB-" + (startNumber + i);
+            String expectedRecordBook = "RB" + (startNumber + i);
             assertEquals(expectedRecordBook, student.getRecordBookNumber());
             assertNotNull(student.getGroupNumber());
             assertTrue(student.getAverageGrade() >= 3.0 && student.getAverageGrade() <= 5.0);
@@ -127,7 +127,7 @@ class CollectionStreamFillerTest {
 
         // Проверяем корректность последовательности
         for (int i = 0; i < students.size(); i++) {
-            assertEquals("RB-" + (startNumber + i), students.get(i).getRecordBookNumber());
+            assertEquals("RB" + (startNumber + i), students.get(i).getRecordBookNumber());
         }
     }
 
@@ -188,7 +188,7 @@ class CollectionStreamFillerTest {
             assertTrue(student.getGroupNumber().matches("^[A-F][1-5]$"));
             assertTrue(student.getAverageGrade() >= 3.0 && student.getAverageGrade() <= 5.0);
             assertNotNull(student.getRecordBookNumber());
-            assertTrue(student.getRecordBookNumber().startsWith("RB-"));
+            assertTrue(student.getRecordBookNumber().startsWith("RB"));
         }
     }
 }
