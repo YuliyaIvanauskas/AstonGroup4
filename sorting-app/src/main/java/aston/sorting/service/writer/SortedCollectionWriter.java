@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SortedCollectionWriter {
 
+    private SortedCollectionWriter() {
+    }
+
     //Method to write sorted collection in to the file
 
     public static <T> void writeSortedCollectionToFile(Collection<T> collection, String filename) {
