@@ -1,11 +1,14 @@
-package aston.sorting.service;
+package aston.sorting.service.provider;
 
+import aston.sorting.exception.ValidationException;
 import aston.sorting.model.Student;
-import aston.sorting.util.ValidationUtil;
+import aston.sorting.model.StudentValidator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ManualDataProvider implements DataProvider {
     private final Scanner scanner;
 
@@ -25,16 +28,16 @@ public class ManualDataProvider implements DataProvider {
             return students;
         }
 
-        System.out.println("Введите данные для " + size + " студентов:");
+        log.info("Введите данные для {} студентов:", size);
 
         for (int i = 0; i < size; i++) {
-            System.out.println("\nСтудент " + (i + 1) + ":");
+            log.info("\nСтудент {}:", (i + 1));
             Student student = readStudentWithRetry();
             if (student != null) {
                 students.add(student);
-                System.out.println("Студент добавлен");
+                log.info("Студент добавлен");
             } else {
-                System.out.println("Не удалось добавить студента после 3 попыток. Пропускаем.");
+                log.warn("Не удалось добавить студента после 3 попыток. Пропускаем.");
             }
         }
         return students;
@@ -46,13 +49,13 @@ public class ManualDataProvider implements DataProvider {
 
         while (attempts < maxAttempts) {
             try {
-                System.out.println("Попытка " + (attempts + 1) + " из " + maxAttempts);
+                log.info("Попытка {} из {}", (attempts + 1), maxAttempts);
                 Student student = readCompleteStudent();
                 if (student != null) {
                     return student;
                 }
             } catch (Exception e) {
-                System.out.println("Ошибка: " + e.getMessage());
+                log.error("Ошибка: {}", e.getMessage());
             }
             attempts++;
         }
@@ -75,45 +78,48 @@ public class ManualDataProvider implements DataProvider {
     }
 
     private String readGroupNumber() {
-        System.out.print("Номер группы (формат: A1, B2, C1): ");
+        log.info("Номер группы (формат: A1, B2, C1): ");
         String groupNumber = readLine();
         if (groupNumber == null) return null;
-
-        if (!ValidationUtil.isValidGroupNumber(groupNumber)) {
-            System.out.println("Ошибка: Неверный формат номера группы! Пример: A1, B2, C1");
+    
+        try {
+            StudentValidator.validateGroupNumber(groupNumber);
+            return groupNumber;
+        } catch (ValidationException e) {
+            log.error("Ошибка: {}", e.getMessage());
             return null;
         }
-        return groupNumber;
     }
 
     private Double readGrade() {
-        System.out.print("Средний балл (2.0-5.0): ");
+        log.info("Средний балл (0.0-10.0): ");
         String gradeInput = readLine();
-        if (gradeInput == null) return null;
-
+    
         try {
-            double averageGrade = Double.parseDouble(gradeInput);
-            if (!ValidationUtil.isValidGrade(averageGrade)) {
-                System.out.println("Ошибка: Средний балл должен быть от 2.0 до 5.0!");
-                return null;
-            }
+            Double averageGrade = gradeInput != null ? Double.valueOf(gradeInput) : null;
+            StudentValidator.validateAverageGrade(averageGrade);
             return averageGrade;
         } catch (NumberFormatException e) {
-            System.out.println("Ошибка: Средний балл должен быть числом! Пример: 4.5");
+            log.error("Ошибка: Средний балл должен быть числом! Пример: 4.5");
+            return null;
+        } catch (ValidationException e) {
+            log.error("Ошибка: {}", e.getMessage());
             return null;
         }
     }
 
     private String readRecordBookNumber() {
-        System.out.print("Номер зачетной книжки (формат: RBXXXX): ");
+        log.info("Номер зачетной книжки (формат: 4-12 букв и цифр): ");
         String recordBookNumber = readLine();
         if (recordBookNumber == null) return null;
-
-        if (!ValidationUtil.isValidRecordBookNumber(recordBookNumber)) {
-            System.out.println("Ошибка: Неверный формат номера зачетной книжки! Пример: RB1001");
+    
+        try {
+            StudentValidator.validateRecordBookNumber(recordBookNumber);
+            return recordBookNumber;
+        } catch (ValidationException e) {
+            log.error("Ошибка: {}", e.getMessage());
             return null;
         }
-        return recordBookNumber;
     }
 
     private String readLine() {

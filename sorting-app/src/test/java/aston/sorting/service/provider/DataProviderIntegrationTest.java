@@ -1,7 +1,8 @@
-package aston.sorting.service;
+package aston.sorting.service.provider;
 
+import aston.sorting.exception.ValidationException;
 import aston.sorting.model.Student;
-import aston.sorting.util.ValidationUtil;
+import aston.sorting.model.StudentValidator;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -25,12 +26,9 @@ class DataProviderIntegrationTest {
 
             for (Student student : students) {
                 assertNotNull(student, "Студент не должен быть null");
-                assertTrue(ValidationUtil.isValidGroupNumber(student.getGroupNumber()),
-                        "Неверный номер группы: " + student.getGroupNumber());
-                assertTrue(ValidationUtil.isValidGrade(student.getAverageGrade()),
-                        "Неверный средний балл: " + student.getAverageGrade());
-                assertTrue(ValidationUtil.isValidRecordBookNumber(student.getRecordBookNumber()),
-                        "Неверный номер зачетки: " + student.getRecordBookNumber());
+                assertDoesNotThrow(() -> StudentValidator.validateGroupNumber(student.getGroupNumber()));
+                assertDoesNotThrow(() -> StudentValidator.validateAverageGrade(student.getAverageGrade()));
+                assertDoesNotThrow(() -> StudentValidator.validateRecordBookNumber(student.getRecordBookNumber()));
             }
         }
     }
@@ -60,7 +58,7 @@ class DataProviderIntegrationTest {
                 // Попытка 1: неверная группа
                 "InvalidGroup\n4.5\nRB1001\n" +
                         // Попытка 2: неверный балл
-                        "A1\n6.0\nRB1001\n" +
+                        "A1\n16.0\nRB1001\n" +
                         // Попытка 3: все верно
                         "A1\n4.5\nRB1001\n";
 
@@ -86,7 +84,7 @@ class DataProviderIntegrationTest {
                 "A1\n4.5\nRB1001\n" +
                         // Студент 2: 3 неудачные попытки → пропущен
                         "Bad1\n4.5\nRB1001\n" +    // ошибка группы
-                        "A1\n6.0\nRB1001\n" +      // ошибка балла
+                        "A1\n16.0\nRB1001\n" +      // ошибка балла
                         "A1\n4.5\nBadRB\n" +       // ошибка зачетки
                         // Студент 3: все верно
                         "C1\n4.2\nRB1003\n";
@@ -112,7 +110,7 @@ class DataProviderIntegrationTest {
                 "A1\n4.5\nRB1001\n" +
                         // Студент 2: 3 неверные попытки - пропускается
                         "Bad1\n4.5\nRB1001\n" +    // ошибка группы
-                        "A1\n6.0\nRB1001\n" +      // ошибка балла
+                        "A1\n16.0\nRB1001\n" +      // ошибка балла
                         "A1\n4.5\nBadRB\n" +       // ошибка зачетки
                         // Студент 3: успешно после одной ошибки
                         "Wrong\n4.5\nRB1001\n" +   // ошибка группы
@@ -137,15 +135,15 @@ class DataProviderIntegrationTest {
         String input =
                 // Студент 1: 3 ошибки
                 "Bad1\n4.5\nRB1001\n" +
-                        "A1\n6.0\nRB1001\n" +
+                        "A1\n16.0\nRB1001\n" +
                         "A1\n4.5\nBadRB\n" +
                         // Студент 2: 3 ошибки
                         "Bad2\n4.5\nRB1001\n" +
-                        "A1\n6.0\nRB1001\n" +
+                        "A1\n16.0\nRB1001\n" +
                         "A1\n4.5\nBadRB\n" +
                         // Студент 3: 3 ошибки
                         "Bad3\n4.5\nRB1001\n" +
-                        "A1\n6.0\nRB1001\n" +
+                        "A1\n16.0\nRB1001\n" +
                         "A1\n4.5\nBadRB\n";
 
         Scanner testScanner = new Scanner(input);
@@ -161,9 +159,9 @@ class DataProviderIntegrationTest {
 
     @Test
     void testFactoryWithAllTypes() {
-        assertTrue(DataProviderFactory.createProvider(DataProviderFactory.DataSourceType.FILE) instanceof aston.sorting.service.FileDataProvider);
-        assertTrue(DataProviderFactory.createProvider(DataProviderFactory.DataSourceType.RANDOM) instanceof aston.sorting.service.RandomDataProvider);
-        assertTrue(DataProviderFactory.createProvider(DataProviderFactory.DataSourceType.MANUAL) instanceof aston.sorting.service.ManualDataProvider);
+        assertTrue(DataProviderFactory.createProvider(DataProviderFactory.DataSourceType.FILE) instanceof FileDataProvider);
+        assertTrue(DataProviderFactory.createProvider(DataProviderFactory.DataSourceType.RANDOM) instanceof RandomDataProvider);
+        assertTrue(DataProviderFactory.createProvider(DataProviderFactory.DataSourceType.MANUAL) instanceof ManualDataProvider);
     }
 
     @Test
@@ -180,9 +178,12 @@ class DataProviderIntegrationTest {
         for (Student student : students) {
             assertNotNull(student);
             if (!students.isEmpty()) {
-                assertTrue(ValidationUtil.isValidGroupNumber(student.getGroupNumber()));
-                assertTrue(ValidationUtil.isValidGrade(student.getAverageGrade()));
-                assertTrue(ValidationUtil.isValidRecordBookNumber(student.getRecordBookNumber()));
+                assertThrows(ValidationException.class,
+                    () -> StudentValidator.validateGroupNumber(student.getGroupNumber()));
+                assertThrows(ValidationException.class,
+                    () -> StudentValidator.validateAverageGrade(student.getAverageGrade()));
+                assertThrows(ValidationException.class,
+                    () -> StudentValidator.validateRecordBookNumber(student.getRecordBookNumber()));
             }
         }
     }

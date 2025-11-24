@@ -1,7 +1,6 @@
-package aston.sorting.service;
+package aston.sorting.service.provider;
 
 import aston.sorting.model.Student;
-import aston.sorting.service.ManualDataProvider;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

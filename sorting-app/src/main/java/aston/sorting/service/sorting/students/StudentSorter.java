@@ -1,17 +1,14 @@
-package aston.sorting;
+package aston.sorting.service.sorting.students;
 
 import aston.sorting.model.Student;
-import aston.sorting.strategy.SortingStrategy;
+import aston.sorting.service.sorting.SortingStrategy;
+import lombok.Setter;
 
+@Setter
 public class StudentSorter {
-    private SortingStrategy strategy;
+    private SortingStrategy<Student> strategy;
 
-    public StudentSorter(SortingStrategy strategy)
-    {
-        this.strategy = strategy;
-    }
-
-    public void setStrategy(SortingStrategy strategy)
+    public StudentSorter(SortingStrategy<Student> strategy)
     {
         this.strategy = strategy;
     }

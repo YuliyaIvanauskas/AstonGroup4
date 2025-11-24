@@ -1,7 +1,9 @@
 package aston.sorting.model;
 
 import java.util.Objects;
+import lombok.Getter;
 
+@Getter
 public final class Student {
     private final String groupNumber;
     private final double averageGrade;
@@ -11,18 +13,6 @@ public final class Student {
         this.groupNumber = builder.groupNumber;
         this.averageGrade = builder.averageGrade;
         this.recordBookNumber = builder.recordBookNumber;
-    }
-
-    public String getGroupNumber() {
-        return groupNumber;
-    }
-
-    public double getAverageGrade() {
-        return averageGrade;
-    }
-
-    public String getRecordBookNumber() {
-        return recordBookNumber;
     }
 
     @Override

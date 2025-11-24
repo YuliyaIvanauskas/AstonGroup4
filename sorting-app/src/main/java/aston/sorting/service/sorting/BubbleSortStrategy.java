@@ -1,4 +1,4 @@
-package aston.sorting.strategy;
+package aston.sorting.service.sorting;
 
 import java.util.Comparator;
 
