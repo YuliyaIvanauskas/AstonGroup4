@@ -109,7 +109,7 @@ public class ManualDataProvider implements DataProvider {
     }
 
     private String readRecordBookNumber() {
-        log.info("Номер зачетной книжки (формат: 4-12 букв и цифр): ");
+        log.info("Номер зачетной книжки (формат: RB + 4 цифры): ");
         String recordBookNumber = readLine();
         if (recordBookNumber == null) return null;
     
