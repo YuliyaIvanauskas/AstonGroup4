@@ -1,6 +1,5 @@
 package aston.sorting.service.provider;
 
-import aston.sorting.exception.ValidationException;
 import aston.sorting.model.Student;
 import aston.sorting.model.StudentValidator;
 import org.junit.jupiter.api.Test;
@@ -178,12 +177,9 @@ class DataProviderIntegrationTest {
         for (Student student : students) {
             assertNotNull(student);
             if (!students.isEmpty()) {
-                assertThrows(ValidationException.class,
-                    () -> StudentValidator.validateGroupNumber(student.getGroupNumber()));
-                assertThrows(ValidationException.class,
-                    () -> StudentValidator.validateAverageGrade(student.getAverageGrade()));
-                assertThrows(ValidationException.class,
-                    () -> StudentValidator.validateRecordBookNumber(student.getRecordBookNumber()));
+                assertDoesNotThrow(() -> StudentValidator.validateGroupNumber(student.getGroupNumber()));
+                assertDoesNotThrow(() -> StudentValidator.validateAverageGrade(student.getAverageGrade()));
+                assertDoesNotThrow(() -> StudentValidator.validateRecordBookNumber(student.getRecordBookNumber()));
             }
         }
     }
